@@ -6,7 +6,7 @@ Es un sistema de almacenamiento organizado bajo un modelo de maestro y esclavo. 
 
 - NameNode que controla el sistema
 - Multiples DataNodes que almacenan fısicamente los datos.
--
-- Ademas, el sistema replica la informaci´ on en varios equipos; por lo tanto, esta accion causa una alta tolerancia a los fallos tecnicos impidiendo la perdida de informacion.
+
+Ademas, el sistema replica la informaci´ on en varios equipos; por lo tanto, esta accion causa una alta tolerancia a los fallos tecnicos impidiendo la perdida de informacion.
 
   
