@@ -18,7 +18,7 @@ A lo largo de este repositorio se documenta el proceso práctico de configuraci�
 
 Para establecer el entorno de almacenamiento distribuido, ejecutamos una serie de configuraciones tanto en el nodo maestro como en los trabajadores (workers). 
 
-### Definición de Variables de Entorno (`hadoop-env.sh`)
+### Definición de Variables de Entorno 
 En primera instancia, definimos las variables críticas para el funcionamiento de Hadoop, especificando la ubicación de Java y la memoria asignada al NameNode:
 
 | Propiedad | Propósito |
@@ -30,7 +30,7 @@ En primera instancia, definimos las variables críticas para el funcionamiento d
 | `HDFS_NAMENODE_OPTS` | Configura opciones del NameNode (Uso de `ParallelGC` y max 4GB RAM). |
 
 
-### Propiedades HDFS (`hdfs-site.xml`)
+### Propiedades HDFS 
 Para garantizar la tolerancia a fallos y la correcta ubicación de los bloques, establecimos los parámetros de replicación y rutas físicas:
 
 | Propiedad | Propósito |
@@ -60,53 +60,70 @@ A continuación se presentan los comandos más utilizados para administrar el si
 
 #### Comando 1: Creación de directorios
 Genera un directorio de primer nivel para almacenar los datos. De igual manera, utilizamos la bandera `-p` para hacer recursivo el comando y crear jerarquías de carpetas automáticamente.
-bash
+```bash
 !hdfs dfs -mkdir /folderA
+!hdfs dfs -mkdir /folderB
+!hdfs dfs -ls /
+```
+Y para la creación jerárquica:
+```bash
 !hdfs dfs -mkdir -p /folderA/experimentos/logs
-
+!hdfs dfs -ls -R /folderA/
+```
+![Comando 1 - mkdir](images/1_comando_mkdir.jpeg)
 
 #### Comando 2: Comprobación de formato correcto
-Este comando base permite comprobar que el NameNode formateado tiene la estructura inicial correcta. También se usa -R para listados recursivos.
-bash
+Este comando base permite comprobar que el NameNode formateado tiene la estructura inicial correcta. También se usa `-R` para listados recursivos.
+```bash
 !hdfs dfs -ls /
-!hdfs dfs -ls -R /folderA
-
+```
+![Comando 2 - ls](images/2_comando_ls.jpeg)
 
 #### Comando 3: Transferencia de archivos locales al cluster
-Transfiere un archivo local al clúster para que esté disponible para los workers utilizando la sentencia -put.
-bash
+Transfiere archivos locales al clúster para que esté disponible para los workers utilizando la sentencia `-put`.
+```bash
 !hdfs dfs -put /home/estudiante/Archivos-prueba-hdfs/Prueba.txt /folderA/
-
+!hdfs dfs -put /home/estudiante/Archivos-prueba-hdfs/Prueba1.txt /folderA/
+!hdfs dfs -put /home/estudiante/Archivos-prueba-hdfs/Prueba.json /folderA/
+```
+![Comando 3 - put](images/3_comando_put.jpeg)
 
 #### Comando 4: Inspección rápida de archivos
-Permite inspeccionar rápidamente archivos de texto o configuraciones JSON alojadas en el clúster. También es posible visualizar solo las últimas *n* líneas usando tuberías con tail.
-bash
+Permite inspeccionar rápidamente archivos de texto o configuraciones JSON alojadas en el clúster. También es posible visualizar solo las últimas *n* líneas usando tuberías con `tail`.
+```bash
 !hdfs dfs -cat /folderA/Prueba.json
 !hdfs dfs -cat /folderA/Prueba.txt | tail -n 20
-
+!hdfs dfs -cat /folderA/Prueba1.txt
+```
+![Comando 4 - cat](images/4_comando_cat.jpeg)
 
 #### Comando 5: Extracción de un proceso
-Realiza la operación inversa (-get), permitiendo extraer la salida de un proceso hacia el entorno local. El uso de la bandera -f fuerza la sobreescritura de archivos locales existentes.
-bash
+Realiza la operation inversa (`-get`), permitiendo extraer la salida de un proceso hacia el entorno local. El uso de la bandera `-f` fuerza la sobreescritura de archivos locales existentes.
+```bash
+!hdfs dfs -get /folderA/Prueba.txt /home/estudiante/Archivos-ingreso-hdfs/
 !hdfs dfs -get -f /folderA/Prueba1.txt /home/estudiante/Archivos-ingreso-hdfs
-
+```
+![Comando 5 - get](images/5_comando_get.jpeg)
 
 #### Comando 6: Copiar datos
 Mueve utilidades o datos de un espacio de trabajo a otro sin requerir descargarlos y volverlos a subir. Es ideal para crear respaldos internos (backups) garantizando un punto de restauración.
-bash
+```bash
+!hdfs dfs -cp /folderA/Prueba.txt /folderB/
 !hdfs dfs -cp /folderA/Prueba1.txt /folderB/backup
-
+```
+![Comando 6 - cp](images/6_comando_cp.jpeg)
 
 #### Comando 7: Limpieza de datos o folders
-Elimina los datos de un directorio de forma recursiva (-r) y forzada (-f), lo cual es vital para la automatización de limpieza en notebooks omitiendo mensajes de advertencia.
-bash
+Elimina los datos de un directorio de forma recursiva (`-r`) y forzada (`-f`), lo cual es vital para la automatización de limpieza en notebooks omitiendo mensajes de advertencia.
+```bash
 !hdfs dfs -rm -r -f /folderA /folderB
+```
+![Comando 7 - rm](images/7_comando_rm.jpeg)
 
+---
 
 ## Conclusiones
- * La asignación cuidadosa de variables de entorno y recursos (como los 4GB de memoria Heap para el NameNode) permitió establecer un clúster HDFS estable y operativo durante las pruebas de estrés.
- * Las pruebas con PySpark validaron empíricamente la correcta comunicación y escritura de DataFrames en formato parquet directamente hacia el ecosistema HDFS.
- * La ejecución de este laboratorio evidenció de manera práctica la eficiencia de la arquitectura maestro-esclavo para manejar tolerancia a fallos mediante la replicación física de bloques.
 
-
-```
+* La asignación cuidadosa de variables de entorno y recursos (como los 4GB de memoria Heap para el NameNode) permitió establecer un clúster HDFS estable y operativo durante las pruebas de estrés.
+* Las pruebas con PySpark validaron empíricamente la correcta comunicación y escritura de DataFrames en formato parquet directamente hacia el ecosistema HDFS.
+* La ejecución de este laboratorio evidenció de manera práctica la eficiencia de la arquitectura maestro-esclavo para manejar tolerancia a fallos mediante la replicación física de bloques.
