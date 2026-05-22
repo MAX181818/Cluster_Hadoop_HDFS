@@ -7,6 +7,19 @@ Es un sistema de almacenamiento organizado bajo un modelo de maestro y esclavo. 
 - NameNode que controla el sistema
 - Multiples DataNodes que almacenan fısicamente los datos.
 
-Ademas, el sistema replica la informaci´ on en varios equipos; por lo tanto, esta accion causa una alta tolerancia a los fallos tecnicos impidiendo la perdida de informacion.
+Ademas, el sistema replica la informacion en varios equipos; por lo tanto, esta accion causa una alta tolerancia a los fallos tecnicos impidiendo la perdida de informacion.
 
 ![Arquitectura general del framework Hadoop: Interaccion del usuario, procesamiento de tareas y almacenamiento en Big Data.](Cluster_Hadoop_HDFS/Arquitectura_General_Hadoop.png)
+
+A lo largo de este repositorio encontraremos una lista de los comando basicos que se utilizaron para poder comprobar la estructura del sistema.
+
+Por lo tanto, se aprendera a explorar sobre los siguientes topicos
+
+1. Gestion de usuarios
+2. Generacion de llaves de autenticacion
+3. Distribucion de Credenciales
+4. Configuracion del Sistema de archivos
+
+Primero se deben realizar la definicion de las variables de entorno con su proposito
+
+
